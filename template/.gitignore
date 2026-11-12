@@ -1,0 +1,20 @@
+.DS_Store
+family.ged.lock
+*.lock
+
+# Never in git: living people, IDs, DNA, addresses
+sources/private/
+sources/dna/
+*.txt.dna
+AncestryDNA*.txt
+
+# Voice recordings (transcripts belong in the project)
+*.ogg
+*.opus
+*.m4a
+
+# Big scans that can be downloaded again any time, for example:
+# sources/scans/2026-01-05_baptisms-sampletown/
+
+# Rebuild backups
+sources/base/backups/

@@ -1,0 +1,64 @@
+0 HEAD
+1 SOUR Example
+1 GEDC
+2 VERS 5.5.1
+2 FORM LINEAGE-LINKED
+1 CHAR UTF-8
+1 NOTE Sample family, fictional. Replace with your own Ancestry export (see README).
+0 @I1@ INDI
+1 NAME Max /Sample/
+1 SEX M
+1 BIRT
+2 DATE 1990
+1 FAMC @F1@
+1 NOTE Status: Proven. Root person (living, birth year only).
+0 @I2@ INDI
+1 NAME Peter /Sample/
+1 SEX M
+1 BIRT
+2 DATE 1960
+2 SOUR @S1@
+3 PAGE Birth certificate no. 57/1960, registry office Exampleville
+3 QUAY 3
+1 FAMC @F2@
+1 FAMS @F1@
+0 @I3@ INDI
+1 NAME John /Sample/
+1 SEX M
+1 BIRT
+2 DATE ABT 1925
+2 SOUR @S2@
+3 PAGE someone else's online tree, no image
+3 QUAY 1
+1 DEAT
+2 DATE 1991
+1 FAMS @F2@
+1 NOTE Status: Possible. Only from someone else's online tree.
+1 CHR
+2 DATE 4 MAR 1925
+2 PLAC Sampletown
+2 SOUR @S0001001@
+3 PAGE Image 112, no. 14: "John, legitimate son of the farmer Joseph Sample and Anna nee Example" (read on a 3x enlarged crop, blind second reading)
+3 QUAY 3
+1 NOTE Status: Probable. Baptism read on the original. Parents match the 1924 marriage; a second record type (land register) is still missing.
+0 @I4@ INDI
+1 NAME Mary /Example/
+1 SEX F
+1 BIRT
+2 DATE 1928
+1 FAMS @F2@
+0 @F1@ FAM
+1 HUSB @I2@
+1 CHIL @I1@
+0 @F2@ FAM
+1 HUSB @I3@
+1 WIFE @I4@
+1 CHIL @I2@
+0 @S1@ SOUR
+1 TITL Registry office Exampleville, births 1960
+0 @S2@ SOUR
+1 TITL Ancestry Family Trees (user tree)
+0 @S0001001@ SOUR
+1 TITL Catholic parish of Sampletown, baptism register 1910-1930 (Sample Archive, call no. PR 3)
+1 TEXT Image 112, no. 14/1925. Saved: sources/scans/2026-01-05_baptisms-sampletown/image112.jpg
+0 TRLR
