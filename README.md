@@ -105,6 +105,8 @@ You need: macOS or Linux, Python 3, git, [Claude Code](https://claude.com/claude
 | `python3 scripts/read_images.py <folder> <result.tsv>` | screens images one by one and cheaply, with an emergency brake |
 | `python3 scripts/calibrate.py expected.tsv actual.tsv` | how reliable is the screening? |
 | `python3 scripts/claude_costs.py` | what did the research cost in Claude compute? |
+| `python3 scripts/online_tree_gap.py` | what is Proven but still missing in the online tree? (exit 1 while something is missing) |
+| `scripts/browser_lock.sh acquire\|release <name> <session>` | atomic lock so only one session uses a shared browser connection |
 
 Every change to the tree is a small script in `scripts/patches/` (template: `0001_example_baptism.py`).
 That keeps track of where every fact comes from, and a mistake can be fixed cleanly later.

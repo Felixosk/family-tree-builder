@@ -83,8 +83,10 @@ Every person has a status (Proven, Probable, Possible). Claude works on the weak
 (`vault/Research/Proof_Plan.md`) and looks for a second record type for every parent-child link
 (land register, cadastre, civil registry, military next to the parish register).
 
-### 8. Update Ancestry (once a month)
-What is proven in `family.ged` goes to Ancestry in one batch. Only what can be proven, only the direct line with siblings.
+### 8. Update Ancestry (at the end of every research round)
+What is proven in `family.ged` goes to Ancestry in one batch, right after the round's checks, without waiting to be asked.
+Only what can be proven, only the direct line with siblings. Afterwards read the tree's notifications, hints and error check
+as text (never accept them) and run `python3 scripts/online_tree_gap.py` (goal: 0 missing).
 How it ran in the reference project:
 1. Claude reads the person list through Ancestry's read interface and compares it with `family.ged`.
    Result: a list "what is missing or different".

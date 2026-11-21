@@ -152,3 +152,27 @@ Through technology:
 20. Read your own folder again with what you know today.
 
 And then wait. Many routes take weeks. Put follow-ups with a date into PROCESS.md.
+
+## 7. Lessons from running many sessions in parallel (November 2026)
+
+1. **A round is not done until it is online.** The user had to ask every time whether the online tree was updated. Now a round
+   is five fixed steps (read, check and enter, online tree, read the tree's messages, counter-check and close), and the main chat
+   runs all of them without asking. The counter-check is a script with an exit code (`online_tree_gap.py`), so "done" is a number.
+2. **Readers write reports, one writer changes the file.** Parallel reading sessions only produce reports with a section "For
+   family.ged". One writer session applies them. Two writers on one GEDCOM gave duplicate IDs earlier.
+3. **Second reading before Proven.** The writer re-reads every passage that lifts a status or sets a new parent link on the enlarged image.
+4. **`curl` first, browser last.** Open sites and login sites with a saved cookie need no browser at all: no permission prompt for the
+   user, no tabs, any number of parallel sessions.
+5. **One browser connection per website, reused.** A new connection per session meant a new permission prompt each time. Check
+   with `ps`, never by running a browser command, and close only your own tab.
+6. **Locks must be atomic.** A "does the file exist?" check followed by "create it" let two sessions take the lock at the same time.
+   `noclobber` makes the creation itself the check (`scripts/browser_lock.sh`).
+7. **Verify the tab and the recipient before every click or send.** A shared tab was moved by another session, and a message
+   reached the wrong DNA match. Check the URL and the recipient by script right before the action.
+8. **Read the online tree's messages, accept nothing.** Notifications, hints and the tree's own error check contain real leads
+   (and real mistakes of other people's trees). Each one is checked against the original record first.
+9. **The main chat answers the side sessions.** It knows the whole context. It only asks the user for spending money outside the
+   subscription, sending something, or things only the user can do (login, phone call).
+10. **Every finished session reports at once**, in 1-3 lines, also when nothing was found. Otherwise the user has to ask for the state.
+11. **Law before searching, Poland:** civil records under 100 years (births) or 80 years (marriages, deaths) are at the registry office,
+    not in the state archive, and only the persons named in the law may request them. "Not in the archive" can simply mean "too young".

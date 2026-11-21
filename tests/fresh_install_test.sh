@@ -45,4 +45,23 @@ python3 -m py_compile scripts/portals/digi_archives_cz.py || fail "portal script
 python3 scripts/rebuild.py --new-base >/dev/null || fail "new base"
 ls scripts/patches/archive/0002_test.py >/dev/null || fail "archive after new base"
 python3 scripts/rebuild.py | grep -q "Rebuild: 0 patches" || fail "rebuild after new base"
+
+# Online tree gap script and lock helper
+mkdir -p output sources
+printf '{"@I1@":"11","@I2@":"22"}' > sources/online_tree_ids.json
+echo '["22"]' > output/online_people.json
+cp family.ged "$T/before_gap.ged"
+python3 - <<'PY'
+t = open('family.ged').read().replace('1 NAME Peter /Sample/\n', '1 NAME Peter /Sample/\n1 NOTE Status: Proven. Test.\n', 1)
+open('family.ged', 'w').write(t)
+PY
+python3 scripts/online_tree_gap.py >/dev/null && fail "gap script should exit 1 while a Proven person is missing"
+grep -q "Missing online" output/online_tree_gap.md || fail "gap report"
+echo '["11","22"]' > output/online_people.json
+python3 scripts/online_tree_gap.py >/dev/null || fail "gap script should be 0 when nothing is missing"
+[ "$(scripts/browser_lock.sh acquire t1 s1)" = "mine" ] || fail "lock acquire"
+[ "$(scripts/browser_lock.sh owner t1)" = "s1" ] || fail "lock owner"
+scripts/browser_lock.sh release t1 s2 >/dev/null 2>&1 && fail "foreign release must fail"
+scripts/browser_lock.sh release t1 s1 >/dev/null || fail "lock release"
+cp "$T/before_gap.ged" family.ged
 echo "FRESH INSTALL OK ($T)"

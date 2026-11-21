@@ -11,6 +11,11 @@ Rule of thumb for 2026: births up to about 1925, marriages and deaths up to abou
 (Archiwum Państwowe, AP), everything younger is at the USC. So "nothing found" in an online database for younger years
 means nothing. Source: Prawo o aktach stanu cywilnego, art. 28.
 
+**Who may ask the registry office (USC):** records still at the USC (under the periods above) are not public. Copies go
+only to the persons named in art. 45 of the same act (in short the person concerned and close relatives such as direct
+ascendants and descendants, plus people who show a legal interest; check the current text). Write the application as a
+descendant, state the relationship, and add proof of it. Do not ask the state archive for such young records: it does not hold them yet.
+
 **Prussian civil registration from 1874:** in Upper Silesia there are civil registers from 1874 next to the parish registers.
 Death records usually name the parents of the deceased, marriage records the parents of both sides. That is often the fastest
 way one generation back.

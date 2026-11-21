@@ -21,6 +21,28 @@ this skill is the workflow. If they disagree, AGENTS.md wins.
 2. `python3 scripts/build_all.py`: GEDCOM 0 errors? Otherwise fix that first.
 3. Does the user have an inbox note (e.g. Obsidian "Family Tree Inbox", section "Open")? Work it in too.
 
+## A research round runs to the end (no "should I enter it online now?")
+A round is only DONE when all five steps are ticked. Do them yourself, in order, without asking in between:
+1. **Read.** Several parallel Claude sessions (not sub-agents), one book or image range each, `curl` only, no browser.
+   They write REPORTS only, each with a section "For family.ged". They never touch `family.ged`.
+2. **Check and enter.** Exactly ONE writer session changes `family.ged`. Before it lifts a status to Proven or sets a
+   new parent link it re-reads that passage itself on the enlarged image (second reading). Then patch script,
+   `rebuild.py` 0 differences, `build_all.py`, tree page.
+3. **Online tree.** Right after that, one session enters everything that is now Proven (person AND parent link).
+   Do not wait for the user.
+4. **Read the online tree's messages, never accept them.** In the same session read notifications, record and photo
+   hints, the tree's own error check and new DNA matches as text. Check each against `family.ged` and the original
+   record: right / wrong / open (and which book). Never click "accept". New leads become reading tasks for the next
+   round; contacting people (photo owners, DNA matches) is a drafted text for the user.
+5. **Counter-check and close.** Fetch the online person list fresh, then `python3 scripts/online_tree_gap.py`
+   (target: 0 missing; exit code 1 while a Proven person with a Proven parent link has no online ID). Count, do not
+   estimate. Then update costs (`claude_costs.py`), archive finished sessions, send ONE closing message:
+   new in the tree · new online / deliberately not entered (count + reason) · open / next round.
+Rules for the sessions: the main chat answers side-session questions itself and only asks the user when money outside
+the subscription is spent, something is sent, or the user must act (login, phone call). Every finished session reports
+its result at once in 1-3 lines (also a null result). Only one session at a time may use a shared browser connection:
+`scripts/browser_lock.sh acquire|release <name> <session>` (atomic lock, see `archive-portals`).
+
 ## Before searching or reading
 1. `python3 scripts/already_read.py "<name>"` and `"<book/call no.>"`. Read the hits first.
 2. Answer the five questions from `vault/Research/Coverage.md` and write them into the research note.
@@ -70,7 +92,9 @@ living people as "Private", without notes and images.
 9. Tell the user what was entered, with source and link.
 
 ## Online tree (Ancestry, MyHeritage ...)
-Only in batches, at most once a month, only the direct line and only what can be proven (batch list in PROCESS.md).
+Enter in one batch per research round (see above), only the direct line and only what can be proven (batch list in PROCESS.md).
+If you want to see unconfirmed people in the tree page, add a view "All" that shades them by status; the default
+views show only what is proven.
 Before entering: does every new person and link have a source? Guesses stay local.
 Afterwards read everything back once (reload the page), not after every person.
 How to click through Ancestry with browser-harness: skill `archive-portals`.

@@ -16,6 +16,12 @@ in the reference project.
   direct download links). Look up the image URL of one page in the browser once, then load with `curl` and a `Referer`.
 - Read public pages and APIs with `curl`. Use the browser only for login, clicks or bot protection.
 
+### Cookies instead of a browser
+For sites with a login (e.g. FamilySearch): fetch the login cookie ONCE from your running browser connection
+(`Storage.getCookies` over CDP, only that site's domain, no tab needed) and store it in `sources/private/<site>_cookies.json`
+(never in git). After that every session uses plain `curl` with that file, in parallel and without any browser prompt.
+On a 401 fetch the cookies again. Parallel reading sessions get no browser tool at all.
+
 ## 2. Avoiding blocks
 - **One session per portal.** Two sessions at once triggered the block on the very first request in the reference project.
   Lock file `sources/paths/<portal>.lock`, delete it at the end.
@@ -32,6 +38,14 @@ in the reference project.
 - **Download folder:** a setting like `Browser.setDownloadBehavior` applies to the WHOLE browser while the connection lives.
   Set it right before the download and reset it to `default` right after (in `finally`). Otherwise the user's own downloads
   land in a strange folder.
+- **Reuse one connection per website** (fixed name, e.g. `ancestry`, `familysearch`), do not open a new one per session:
+  every new connection makes Chrome ask the user for permission again. Check whether it runs with `ps aux | grep browser_harness.daemon`,
+  NEVER by running a browser-harness command (that starts a new connection). At the end do not stop it, only close your own tab
+  (`Target.closeTarget`) and check that no empty tab is left. Connect Chrome only when work follows, not to test or tidy up.
+- **One session at a time per connection, with an atomic lock.** "Check if the lock file exists, then create it" lets two sessions
+  win at once. Use `scripts/browser_lock.sh acquire <name> <session>` (create with `noclobber`), wait for "mine", work, `release`.
+- **Before every click or send, check the tab URL and the recipient/target** by script. Once a message went to the wrong DNA match
+  because another session had navigated the shared tab in between. A wrong tab is cheaper to catch than a wrong message.
 - Login, two-factor, consent: stop and ask the user.
 
 ## 4. Online trees (Ancestry and similar)
@@ -42,6 +56,8 @@ in the reference project.
 - Read APIs are faster and cheaper than screenshots: read pages as text, check everything once at the end.
 - The export often comes as a ZIP. Check it is fresh by the date in the GEDCOM header; `cmp old.ged new.ged` exposes an old file.
 - Only enter what can be proven, delete nothing, do not accept hints, do not change settings.
+- **Reading the tree's messages:** notifications (bell), person/photo/record hints, the tree's own error check and new DNA matches
+  are worth reading as text every round. Treat each as a lead: check it against your file and the original record, never click "accept".
 
 ### Ancestry in detail (as of November 2026)
 - Read the person list: `/api/treesui-list/trees/<TREE-ID>/persons?limit=100&page=N` in the logged-in tab (pages 1, 2, ...
